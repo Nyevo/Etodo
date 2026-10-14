@@ -24,4 +24,3 @@ before-packaging-command = "cargo build --release"
 authors = ["Nyevo"]
 identifier = "com.example.nyevo"
 copyright = "Copyright © 2025 Nyevo"
-resources = ["assets/todo_data.ron", "assets/fonts/Alibaba-PuHuiTi-Regular.ttf"]
