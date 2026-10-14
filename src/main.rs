@@ -1,3 +1,4 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use chrono::{Datelike, Local, NaiveDate};
 use eframe::egui;
 use egui::RichText;
