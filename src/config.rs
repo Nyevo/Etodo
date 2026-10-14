@@ -7,7 +7,7 @@ pub fn configure_fonts(ctx: &egui::Context) {
     let mut fonts = FontDefinitions::default();
     let p = resources_dir(PackageFormat::Nsis)
         .unwrap()
-        .join("./assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+        .join("Alibaba-PuHuiTi-Regular.ttf");
     // 为 Proportional 字体族添加中文字体
     // 放置在最前面：egui 先尝试这个字体
     fonts.font_data.insert(

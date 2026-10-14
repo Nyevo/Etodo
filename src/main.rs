@@ -1,4 +1,4 @@
-//#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use cargo_packager_resource_resolver::{PackageFormat, resources_dir};
 use chrono::{Datelike, Local, NaiveDate};
 use eframe::egui;
