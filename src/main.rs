@@ -1,9 +1,10 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+//#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+use cargo_packager_resource_resolver::{PackageFormat, resources_dir};
 use chrono::{Datelike, Local, NaiveDate};
 use eframe::egui;
 use egui::RichText;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::{collections::HashMap, path::PathBuf};
 
 use crate::config::configure_fonts;
 mod config;
@@ -49,9 +50,10 @@ struct Task {
 // 应用状态
 // ============================================================
 
-const SAVE_PATH: &str = "todo_data.ron";
+// 解析资源目录
 
 struct TodoApp {
+    save_path: PathBuf,
     tasks: Vec<Task>,
     current_year: i32,
     current_month: u32,
@@ -65,7 +67,9 @@ impl TodoApp {
     fn new(tasks: Vec<Task>, year: i32, month: u32) -> Self {
         let today = Local::now().date_naive();
         let next_id = tasks.iter().map(|t| t.id).max().unwrap_or(0) + 1;
+
         Self {
+            save_path: Self::get_save_path(),
             tasks,
             current_year: year,
             current_month: month,
@@ -80,13 +84,19 @@ impl TodoApp {
     fn persist(&self) {
         let data = (&self.tasks, self.current_year, self.current_month);
         if let Ok(text) = ron::to_string(&data) {
-            let _ = std::fs::write(SAVE_PATH, text);
+            let _ = std::fs::write(&self.save_path, text);
         }
+    }
+    fn get_save_path() -> PathBuf {
+        resources_dir(PackageFormat::Nsis)
+            .unwrap()
+            .join("todo_data.ron")
     }
 
     fn load() -> (Vec<Task>, i32, u32) {
         let today = Local::now().date_naive();
-        if let Ok(text) = std::fs::read_to_string(SAVE_PATH) {
+
+        if let Ok(text) = std::fs::read_to_string(Self::get_save_path()) {
             if let Ok((tasks, year, month)) = ron::from_str::<(Vec<Task>, i32, u32)>(&text) {
                 return (tasks, year, month);
             }

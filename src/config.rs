@@ -1,17 +1,20 @@
 use std::sync::Arc;
 
+use cargo_packager_resource_resolver::{PackageFormat, resources_dir};
 use eframe::egui::{self, FontData, FontDefinitions, FontFamily};
 
 pub fn configure_fonts(ctx: &egui::Context) {
     let mut fonts = FontDefinitions::default();
-
+    let p = resources_dir(PackageFormat::Nsis)
+        .unwrap()
+        .join("./assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
     // 为 Proportional 字体族添加中文字体
     // 放置在最前面：egui 先尝试这个字体
     fonts.font_data.insert(
         "pht".to_owned(),
         Arc::new(FontData::from_owned(
             // include_bytes! 在编译时将文件嵌入二进制
-            std::fs::read("assets/fonts/Alibaba-PuHuiTi-Regular.ttf").unwrap_or_default(),
+            std::fs::read(p).unwrap_or_default(),
         )),
     );
 
