@@ -261,7 +261,7 @@ impl TodoApp {
 
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         ui.colored_label(task.priority.color(), "●");
-                        if ui.small_button("x").clicked() {
+                        if ui.small_button("xx").clicked() {
                             to_remove.push(task.id);
                         }
                     });
